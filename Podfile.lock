@@ -1,5 +1,4 @@
 PODS:
-  - CropViewController (2.5.3)
   - GoogleDataTransport (3.3.1)
   - GoogleDataTransportCCTSupport (1.3.1):
     - GoogleDataTransport (~> 3.3)
@@ -61,13 +60,11 @@ PODS:
     - TensorFlowLiteC (= 2.1.0)
 
 DEPENDENCIES:
-  - CropViewController
   - GoogleMLKit/TextRecognition
   - TensorFlowLiteSwift
 
 SPEC REPOS:
   trunk:
-    - CropViewController
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleMLKit
@@ -85,7 +82,6 @@ SPEC REPOS:
     - TensorFlowLiteSwift
 
 SPEC CHECKSUMS:
-  CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   GoogleDataTransport: 0048df6388dab1c254799f2a30365b1dffe20422
   GoogleDataTransportCCTSupport: f880d70972efa2ed1be4e9173a0f4c5f3dc2d176
   GoogleMLKit: 2cfea16eceac4f555b20b37a81bc8aa0940c6e9c
@@ -102,6 +98,6 @@ SPEC CHECKSUMS:
   TensorFlowLiteC: 215603d4426d93810eace5947e317389554a4b66
   TensorFlowLiteSwift: 9d8137f18d5ac30ca89bba4fbe118e0949ac5743
 
-PODFILE CHECKSUM: 90a92f5c2b5b38ed5f822b0c55edb494916fa1fa
+PODFILE CHECKSUM: 5fe96c4b47e4c8cf2eaadc4a9528beaaf2cf9498
 
 COCOAPODS: 1.9.2

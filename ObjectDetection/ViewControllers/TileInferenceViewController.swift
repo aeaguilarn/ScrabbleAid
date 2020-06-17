@@ -9,7 +9,6 @@
 import UIKit
 import Vision
 import MLKit
-import CropViewController
 
 class TileInferenceViewController: UIViewController {
 
