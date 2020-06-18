@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3BA7ADAE59D31D1E98F2EECF /* Pods_ScrabbleAid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF5E31B06A16F0CC1BE954FE /* Pods_ScrabbleAid.framework */; };
+		590161BF249B9DBA002119E0 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590161BE249B9DBA002119E0 /* Word.swift */; };
 		5932A923247ABC8B002A8746 /* StartingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5932A922247ABC8B002A8746 /* StartingViewController.swift */; };
 		5932A92A247ABFFF002A8746 /* BoardCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5932A926247ABFFF002A8746 /* BoardCellModel.swift */; };
 		5932A92D247ABFFF002A8746 /* BoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5932A929247ABFFF002A8746 /* BoardCell.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		590161BE249B9DBA002119E0 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		5932A922247ABC8B002A8746 /* StartingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartingViewController.swift; sourceTree = "<group>"; };
 		5932A926247ABFFF002A8746 /* BoardCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCellModel.swift; sourceTree = "<group>"; };
 		5932A929247ABFFF002A8746 /* BoardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCell.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				5932A929247ABFFF002A8746 /* BoardCell.swift */,
 				5932A926247ABFFF002A8746 /* BoardCellModel.swift */,
 				596AC5D12497B7D100F8CBAE /* WordChecker.swift */,
+				590161BE249B9DBA002119E0 /* Word.swift */,
 				AA16E59A21807A7000D9E153 /* Cells */,
 				AAB1116F21512383008C215D /* ModelDataHandler */,
 				AA9AC5D4212D43E0000B4E9D /* Camera Feed */,
@@ -381,6 +384,7 @@
 				AA9AC5D7212D43E0000B4E9D /* PreviewView.swift in Sources */,
 				AA16E59B21807BAC00D9E153 /* InfoCell.swift in Sources */,
 				596AC5D42499196300F8CBAE /* WordTableViewCell.swift in Sources */,
+				590161BF249B9DBA002119E0 /* Word.swift in Sources */,
 				5932A923247ABC8B002A8746 /* StartingViewController.swift in Sources */,
 				AA16E59F2180822B00D9E153 /* CurvedView.swift in Sources */,
 			);

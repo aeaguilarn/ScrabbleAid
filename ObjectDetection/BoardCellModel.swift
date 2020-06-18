@@ -50,8 +50,6 @@ class BoardCellModel {
                 boardCell.special = "center"
             }
             
-            //print(String(boardCell.row) + " " + String(boardCell.column))
-            
             boardCellArray.append(boardCell)
             
             col += 1

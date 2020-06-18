@@ -40,7 +40,6 @@ class TileInferenceViewController: UIViewController {
         recognizeTiles(image: image, x: x, y: y, width: cellWidth, height: cellHeight, nextCol: nextCol, nextRow: nextRow) {returnedArray in
             guard let returnedArray = returnedArray else {return}
             self.cellTextArray = returnedArray
-            print(self.cellTextArray.count)
             self.performSegue(withIdentifier: "SegueToNextScreen", sender: self)
         }
         
@@ -96,6 +95,7 @@ class TileInferenceViewController: UIViewController {
         let crop_box = CGRect(x: x + nextCol * 7, y: y + nextRow * 7, width: cellWidth, height: cellHeight)
         let cropped_image = self.cropImage(image, toRect: crop_box, viewWidth: view.frame.width, viewHeight: view.frame.height)
         self.selectedCellImageView.image = cropped_image
+        self.selectedCellImageView.layer.cornerRadius = 7
     }
     
     //Perform text recognition
@@ -136,7 +136,6 @@ class TileInferenceViewController: UIViewController {
                         for text in result.blocks {
                             if alphabet.contains(String(text.text.prefix(1))) {
                                 arrayToReturn.append(String(text.text.prefix(1)))
-                                print(String(text.text.prefix(1)))
                                 appended = true
                                 break
                             }

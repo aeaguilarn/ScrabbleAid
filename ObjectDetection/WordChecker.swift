@@ -13,7 +13,7 @@ class WordChecker {
     
     var twoDimensionalArray : [[BoardCell]] = []
     var textChecker = UITextChecker()
-    var words = [String]()
+    var words = [Word]()
     
     init(boardCellArray : [BoardCell]) {
         var counter = 0
@@ -30,48 +30,70 @@ class WordChecker {
         }
     }
     
-    func checkForWords() -> [String] {
+    func checkForWords() -> [Word] {
         
-        var foundWords = [String]()
+        var foundWords = [Word]()
         
         //Check Horizontal
         for row in 0...14 {
-            var potentialWord = ""
+            var word = Word()
             var inWord = false
             for col in 0...14 {
                 let letter = twoDimensionalArray[row][col].letter
                 if letter == "" || col == 14 {
                     if inWord {
-                        foundWords.append(potentialWord)
-                        potentialWord = ""
+                        
+                        if col == 14{
+                            word.end = [row, col]
+                        }
+                        else {
+                            word.end = [row, col - 1]
+                        }
+                        
+                        foundWords.append(word)
+                        word = Word()
                     }
                     
                     inWord = false
                 }
                 else {
+                    if inWord == false {
+                        word.start = [row, col]
+                    }
                     inWord = true
-                    potentialWord += letter
+                    word.text += letter
                 }
             }
         }
         
         //Check Vertical
         for col in 0...14 {
-            var potentialWord = ""
+            var word = Word()
             var inWord = false
             for row in 0...14 {
                 let letter = twoDimensionalArray[row][col].letter
                 if letter == "" || row == 14 {
                     if inWord {
-                        foundWords.append(potentialWord)
-                        potentialWord = ""
+                        
+                        if row == 14{
+                            word.end = [row, col]
+                        }
+                        else {
+                            word.end = [row - 1, col]
+                        }
+                        
+                        foundWords.append(word)
+                        word = Word()
                     }
                     
                     inWord = false
                 }
                 else {
+                    if inWord == false {
+                        word.start = [row, col]
+                    }
                     inWord = true
-                    potentialWord += letter
+                    word.text += letter
                 }
             }
         }
@@ -94,7 +116,7 @@ class WordChecker {
         
         //Check if all words are in the English dictionary
         for word in foundWords {
-            if self.isEnglishWord(word: word) {
+            if self.isEnglishWord(word: word.text.lowercased()) {
                 continue
             }
             else {

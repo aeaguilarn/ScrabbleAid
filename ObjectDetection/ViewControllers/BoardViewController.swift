@@ -13,7 +13,8 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
     var boardCellModel = BoardCellModel()
     var boardCells = [BoardCell]()
     var cellTextArray : [String] = []
-    var wordsArray : [String] = []
+    var wordsArray : [Word] = []
+    var selectedTableWord : Word = Word()
     
     @IBOutlet weak var boardCollectionView: UICollectionView!
     @IBOutlet weak var boardValidityLabel: UILabel!
@@ -40,7 +41,7 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
             
             //Put words on the table view (only those longer than one character)
             for word in wordChecker.checkForWords() {
-                if word.count > 1 {
+                if word.text.count > 1 {
                     self.wordsArray.append(word)
                 }
             }
@@ -57,10 +58,11 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         //Get array of BoardCells
         boardCells = boardCellModel.getBoardCells()
 
-        print("Array Count:", cellTextArray.count)
-        print("Board cell count:", boardCells.count)
         for i in 0...cellTextArray.count - 1 {
             boardCells[i].letter = String(cellTextArray[i].prefix(1))
+            boardCells[i].column = i % 15
+            boardCells[i].row = Int(i / 15)
+            //print("r: \(boardCells[i].row) c: \(boardCells[i].column) t: \(boardCells[i].letter)")
         }
     }
     
@@ -92,14 +94,6 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         
     }
     
-    func isEnglishWord(word : String) -> Bool {
-        let checker = UITextChecker()
-        let range = NSRange(location: 0, length: word.utf16.count)
-        let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
-
-        return misspelledRange.location == NSNotFound
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return wordsArray.count
@@ -109,10 +103,44 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         let cell = wordTableView.dequeueReusableCell(withIdentifier: "wordCell") as! WordTableViewCell
         
-        //Get word text
-        cell.wordLabel.text = wordsArray[indexPath.row]
+        //Get word
+        cell.word = wordsArray[indexPath.row]
+        cell.wordLabel.text = cell.word.text
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let word = wordsArray[indexPath.row]
+        
+        //Un-Highlight previously selected word
+        if selectedTableWord.text != "" {
+            
+            for row in selectedTableWord.start[0]...selectedTableWord.end[0] {
+                for col in selectedTableWord.start[1]...selectedTableWord.end[1] {
+                    
+                    let index = IndexPath(row: (row * 15) + col, section: 0)
+                    let currentCell = boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+                    
+                    currentCell.highlightCell(value: false)
+                }
+            }
+            
+        }
+        
+        //Hightlight new seleceted word
+        for row in word.start[0]...word.end[0] {
+            for col in word.start[1]...word.end[1] {
+                
+                let index = IndexPath(row: (row * 15) + col, section: 0)
+                let currentCell = boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+                
+                currentCell.highlightCell(value: true)
+            }
+        }
+        
+        selectedTableWord = word
     }
 
     /*
