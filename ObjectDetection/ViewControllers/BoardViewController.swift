@@ -15,10 +15,38 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
     var cellTextArray : [String] = []
     var wordsArray : [Word] = []
     var selectedTableWord : Word = Word()
+    lazy var wordChecker = WordChecker(boardCellArray: boardCells)
     
     @IBOutlet weak var boardCollectionView: UICollectionView!
     @IBOutlet weak var boardValidityLabel: UILabel!
     @IBOutlet weak var wordTableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var validationButton: UIButton!
+    @IBOutlet weak var validationPromptLabel: UILabel!
+    @IBOutlet weak var rescanButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBAction func traverseBoardButton(_ sender: Any) {
+        self.segmentedControl.isHidden = true
+        self.validationButton.isHidden = true
+        
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            print(depthFirstSearchValidation())
+        }
+        else {
+            print(breadthFirstSearchValidation())
+        }
+        
+        self.validationPromptLabel.isHidden = true
+        self.wordTableView.isHidden = false
+        self.wordTableView.frame.origin.y = 550
+        
+        self.rescanButton.frame.origin.y = 790
+        self.rescanButton.frame.origin.x = 146
+        
+        self.boardValidityLabel.isHidden = false
+        self.titleLabel.text = "Words:"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,9 +62,13 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         //Put recognized tiles on board
         self.populateBoard()
         
-        //Initialize WordChecker object
-        let wordChecker = WordChecker(boardCellArray: boardCells)
+        self.wordTableView.isHidden = true
+        self.boardValidityLabel.isHidden = true
         
+        //Initialize WordChecker object
+        //self.wordChecker = WordChecker(boardCellArray: boardCells)
+        
+        //Verify if every word in the board is in the English dictionary
         if wordChecker.isValidBoard() {
             
             //Put words on the table view (only those longer than one character)
@@ -62,7 +94,7 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
             boardCells[i].letter = String(cellTextArray[i].prefix(1))
             boardCells[i].column = i % 15
             boardCells[i].row = Int(i / 15)
-            //print("r: \(boardCells[i].row) c: \(boardCells[i].column) t: \(boardCells[i].letter)")
+            boardCells[i].cellNum = i
         }
     }
     
@@ -141,6 +173,120 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         
         selectedTableWord = word
+    }
+    
+    func depthFirstSearchValidation() -> Bool{
+        
+        print("DFS")
+        
+        let matrix = self.wordChecker.getTwoDimensinalArray()
+        var stack : [BoardCell] = [matrix[7][7]]
+        var visited : [Int] = []
+        
+        while stack.count > 0 {
+            let node = stack.popLast()!
+            
+            //Check if the cell has been already visited, mark visited if not
+            if visited.contains(node.cellNum) {
+                continue
+            }
+            else {
+                visited.append(node.cellNum)
+            }
+            
+            //Highlight Cell
+            let index = IndexPath(row: node.cellNum, section: 0)
+            let currentCell = boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+            currentCell.highlightCell(value: true)
+            
+            do {
+                sleep(1)
+            }
+            
+            for child in self.getCellNeighbors(matrix, node) {
+                if child.letter != "" {
+                    stack.append(child)
+                }
+            }
+        }
+        
+        if visited.count == self.wordChecker.tileCount {
+            return true
+        }
+        else {
+            return false
+        }
+        
+    }
+    
+    func breadthFirstSearchValidation() -> Bool {
+        
+        print("BFS")
+        
+        let matrix = self.wordChecker.getTwoDimensinalArray()
+        
+        if matrix[7][7].letter == "" {
+            return false
+        }
+        
+        var queue : [BoardCell] = [matrix[7][7]]
+        var visited : [Int] = []
+        
+        while queue.count > 0 {
+            let node = queue.remove(at: 0)
+            
+            //Check if the cell has been already visited, mark visited if not
+            if visited.contains(node.cellNum) {
+                continue
+            }
+            else {
+                visited.append(node.cellNum)
+            }
+            
+            //Highlight Cell
+            let index = IndexPath(row: node.cellNum, section: 0)
+            let currentCell = boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+            currentCell.highlightCell(value: true)
+            
+            do {
+                sleep(1)
+            }
+            
+            for child in self.getCellNeighbors(matrix, node) {
+                if child.letter != "" {
+                    queue.append(child)
+                }
+            }
+        }
+        
+        if visited.count == self.wordChecker.tileCount {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    
+    func getCellNeighbors(_ matrix: [[BoardCell]], _ node: BoardCell) -> [BoardCell] {
+        
+        var neighbors : [BoardCell] = []
+        let row = node.row
+        let col = node.column
+        
+        if row - 1 >= 0 {
+            neighbors.append(matrix[row - 1][col])
+        }
+        if col + 1 < 15 {
+            neighbors.append(matrix[row][col + 1])
+        }
+        if row + 1 < 15 {
+            neighbors.append(matrix[row + 1][col])
+        }
+        if col - 1 >= 0 {
+            neighbors.append(matrix[row][col - 1])
+        }
+        
+        return neighbors
     }
 
     /*

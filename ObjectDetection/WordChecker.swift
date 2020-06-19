@@ -14,12 +14,16 @@ class WordChecker {
     var twoDimensionalArray : [[BoardCell]] = []
     var textChecker = UITextChecker()
     var words = [Word]()
+    var tileCount = 0
     
     init(boardCellArray : [BoardCell]) {
         var counter = 0
         for _ in 0...14 {
             var currentArray : [BoardCell] = []
             while true {
+                if boardCellArray[counter].letter != "" {
+                    self.tileCount += 1
+                }
                 currentArray.append(boardCellArray[counter])
                 counter += 1
                 if counter % 15 == 0 {
@@ -57,6 +61,7 @@ class WordChecker {
                     inWord = false
                 }
                 else {
+                    
                     if inWord == false {
                         word.start = [row, col]
                     }
@@ -124,34 +129,10 @@ class WordChecker {
             }
         }
         
-        //Check if all tiles are placed adjacent to other tiles
-        for row in 0...14 {
-            for col in 0...14 {
-                
-                let cell = twoDimensionalArray[row][col]
-                
-                if cell.letter != "" {
-                    
-                    //Check for adjacents
-                    if row - 1 >= 0 && twoDimensionalArray[row - 1][col].letter != "" {
-                        continue
-                    }
-                    if col + 1 < 14 && twoDimensionalArray[row][col + 1].letter != "" {
-                        continue
-                    }
-                    if row + 1 < 14 && twoDimensionalArray[row + 1][col].letter != "" {
-                        continue
-                    }
-                    if col - 1 >= 0 && twoDimensionalArray[row][col - 1].letter != "" {
-                        continue
-                    }
-                    
-                    print(false)
-                    return false
-                }
-            }
-        }
-        
         return true
+    }
+    
+    func getTwoDimensinalArray() -> [[BoardCell]]{
+        return twoDimensionalArray
     }
 }

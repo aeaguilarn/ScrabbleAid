@@ -13,4 +13,5 @@ class BoardCell {
     var row = 0
     var column = 0
     var special = ""
+    var cellNum = 0
 }
