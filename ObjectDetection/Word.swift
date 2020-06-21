@@ -8,6 +8,7 @@
 
 import Foundation
 
+//Structure that holds information about a word in the Scrabble board
 struct Word {
     var text = ""
     var start = [-1, -1]

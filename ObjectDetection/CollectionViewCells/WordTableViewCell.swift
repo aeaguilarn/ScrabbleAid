@@ -8,6 +8,7 @@
 
 import UIKit
 
+//Class for custom cell to be used in a table view
 class WordTableViewCell: UITableViewCell {
 
     @IBOutlet weak var wordLabel: UILabel!

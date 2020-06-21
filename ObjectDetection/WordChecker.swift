@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//Class that handles Scrabble board operations
 class WordChecker {
     
     var twoDimensionalArray : [[BoardCell]] = []
@@ -16,6 +17,7 @@ class WordChecker {
     var words = [Word]()
     var tileCount = 0
     
+    //Class constructor, builds a matrix from a list of Board Cells
     init(boardCellArray : [BoardCell]) {
         var counter = 0
         for _ in 0...14 {
@@ -34,8 +36,10 @@ class WordChecker {
         }
     }
     
+    //Function that traverses board horizontally and vertically, to find words placed down and across the board
     func checkForWords() -> [Word] {
         
+        //List to hold all found words
         var foundWords = [Word]()
         
         //Check Horizontal
@@ -106,6 +110,7 @@ class WordChecker {
         return foundWords
     }
     
+    //Function that checks if a word is defined in the English dictionary
     func isEnglishWord(word : String) -> Bool {
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: word.utf16.count)
@@ -114,7 +119,8 @@ class WordChecker {
         return misspelledRange.location == NSNotFound
     }
     
-    func isValidBoard() -> Bool {
+    //Function that checks if all words in board are on the English dictionary
+    func hasValidWords() -> Bool {
         
         let foundWords = self.checkForWords()
         self.words = foundWords
@@ -132,6 +138,7 @@ class WordChecker {
         return true
     }
     
+    //Function that returns matrix of cells in board
     func getTwoDimensinalArray() -> [[BoardCell]]{
         return twoDimensionalArray
     }

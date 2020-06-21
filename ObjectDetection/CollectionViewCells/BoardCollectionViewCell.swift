@@ -8,6 +8,7 @@
 
 import UIKit
 
+//Class for custom cell to be used in collection view
 class BoardCollectionViewCell: UICollectionViewCell {
     
     var boardCell:BoardCell?
@@ -15,8 +16,10 @@ class BoardCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var letterLabel: UILabel!
     @IBOutlet weak var tileImage: UIImageView!
     
+    //Function that modifies collection view cell according to passed in board cell object
     func setBoardCell(_ boardCell: BoardCell) {
         
+        //Changes text displayed in cell
         self.letterLabel.text = boardCell.letter
         
         if self.letterLabel.text != "" {
@@ -33,6 +36,7 @@ class BoardCollectionViewCell: UICollectionViewCell {
         colorCell()
     }
     
+    //Function that highlights or un-highlights collection view cell
     func highlightCell(value: Bool) {
         if value == true {
             self.tileImage.isHidden = true
@@ -44,6 +48,8 @@ class BoardCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //Sets the appropiate color for the collection view cell
+    //This is determined by the board cell's score value
     func colorCell() {
         
         //Change cell background color

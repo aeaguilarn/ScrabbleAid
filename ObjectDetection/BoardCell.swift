@@ -8,6 +8,7 @@
 
 import Foundation
 
+//Class that represents a cell in the Scrabble board, and holds information about it
 class BoardCell {
     var letter = ""
     var row = 0

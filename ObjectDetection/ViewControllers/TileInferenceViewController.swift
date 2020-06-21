@@ -106,7 +106,9 @@ class TileInferenceViewController: UIViewController {
         //Intialize text recognizer
         let textRecognizer = TextRecognizer.textRecognizer()
         
+        //Declare alphabet to make sure we only recognize letters
         let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        
         for row in 0...14 {
             for col in 0...14 {
                 
@@ -119,7 +121,6 @@ class TileInferenceViewController: UIViewController {
                 let vision_image = VisionImage(image: cropped_image!)
                 vision_image.orientation = cropped_image!.imageOrientation
                 
-                //dispatchGroup.enter()
                 //Recognize text in vision image
                 textRecognizer.process(vision_image) { result, error in
                   guard error == nil, let result = result else {
@@ -141,7 +142,7 @@ class TileInferenceViewController: UIViewController {
                             }
                         }
                         
-                        //Make sure to at lease append something
+                        //Make sure to at least append something
                         if appended == false {
                             arrayToReturn.append("")
                         }
@@ -156,7 +157,7 @@ class TileInferenceViewController: UIViewController {
         }
     }
     
-    //Convert image from CIImage to UIImage
+    //Function that converts image from CIImage to UIImage
     func convert(cimage:CIImage) -> UIImage
      {
          let context:CIContext = CIContext.init(options: nil)
@@ -166,7 +167,7 @@ class TileInferenceViewController: UIViewController {
 
      }
     
-    //Crop image to specified CGRect
+    //Function that crops image to specified CGRect
     func cropImage(_ inputImage: UIImage, toRect cropRect: CGRect, viewWidth: CGFloat, viewHeight: CGFloat) -> UIImage?
     {
         let imageViewScale = max(inputImage.size.width / viewWidth,
