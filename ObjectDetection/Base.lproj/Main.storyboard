@@ -309,6 +309,17 @@ Qm9hcmRDb2xsZWN0aW9uEFZpZXc
                                     <action selector="traverseBoardButton:" destination="Xdh-fa-eKF" eventType="touchUpInside" id="DuK-xb-0ZE"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="wnh-y3-QLl">
+                                <rect key="frame" x="189" y="644" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utF-mo-ZHy">
+                                <rect key="frame" x="82" y="602" width="251" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -320,6 +331,8 @@ Qm9hcmRDb2xsZWN0aW9uEFZpZXc
                         <viewLayoutGuide key="safeArea" id="aNx-WU-Ng2"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="wnh-y3-QLl" id="xBS-hC-dQX"/>
+                        <outlet property="activityIndicatorLabel" destination="utF-mo-ZHy" id="3ai-CY-W1N"/>
                         <outlet property="boardCollectionView" destination="uUC-r3-i2r" id="naF-yy-7gZ"/>
                         <outlet property="boardValidityLabel" destination="aU8-WC-ka4" id="PN1-VO-abn"/>
                         <outlet property="rescanButton" destination="Vie-3Y-78r" id="Nrt-rD-EHe"/>
@@ -337,7 +350,7 @@ Qm9hcmRDb2xsZWN0aW9uEFZpZXc
         <!--Starting View Controller-->
         <scene sceneID="G9d-bY-PxB">
             <objects>
-                <viewController id="T72-Ru-wct" customClass="StartingViewController" customModule="ObjectDetection" sceneMemberID="viewController">
+                <viewController id="T72-Ru-wct" customClass="StartingViewController" customModule="ScrabbleAid" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zSi-rb-5Id">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

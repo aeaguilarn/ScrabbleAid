@@ -37,13 +37,15 @@ class BoardCollectionViewCell: UICollectionViewCell {
     }
     
     //Function that highlights or un-highlights collection view cell
-    func highlightCell(value: Bool) {
+    func highlightCell(value: Bool, color: UIColor = UIColor.green) {
         if value == true {
             self.tileImage.isHidden = true
-            self.backgroundColor = UIColor.green
+            self.backgroundColor = color
         }
         else {
-            self.tileImage.isHidden = false
+            if self.letterLabel.text != "" {
+                self.tileImage.isHidden = false
+            }
             colorCell()
         }
     }

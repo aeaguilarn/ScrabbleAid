@@ -16,6 +16,7 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
     var wordsArray : [Word] = []
     var selectedTableWord : Word = Word()
     lazy var wordChecker = WordChecker(boardCellArray: boardCells)
+    var timer : Timer?
     
     @IBOutlet weak var boardCollectionView: UICollectionView!
     @IBOutlet weak var boardValidityLabel: UILabel!
@@ -25,24 +26,74 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
     @IBOutlet weak var validationPromptLabel: UILabel!
     @IBOutlet weak var rescanButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var activityIndicatorLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    //Function that validates board, using the traversal algorithm seleceted by the user and verifying each word is in the English dictionary
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //Declare the BoardViewController as the delegate and datasource of the boardCollectionView
+        boardCollectionView.delegate = self
+        boardCollectionView.dataSource = self
+        
+        //Declare the BoardViewController as the delegate and datasource of the wordTableView
+        wordTableView.delegate = self
+        wordTableView.dataSource = self
+        
+        //Put recognized tiles on board
+        self.populateBoard()
+        
+        //Hide table view, board validity label, activity indicator and activity indicator label
+        //These will show after the user hits the validation button
+        self.wordTableView.isHidden = true
+        self.boardValidityLabel.isHidden = true
+        self.activityIndicatorLabel.isHidden = true
+        self.activityIndicator.isHidden = true
+    }
+    
+ //Function that validates board, using the traversal algorithm seleceted by the user and verifying each word is in the English dictionary
     //Called when user hits the validation button
     @IBAction func traverseBoardButton(_ sender: Any) {
         
+        self.titleLabel.isHidden = true
+        self.rescanButton.isHidden = true
+        self.validationPromptLabel.isHidden = true
         self.segmentedControl.isHidden = true
         self.validationButton.isHidden = true
         
-        var validTilePositions = false
+        self.activityIndicatorLabel.isHidden = false
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
         
         //Traverse the board with the user's selected traversal algorithm
         if self.segmentedControl.selectedSegmentIndex == 0 {
-            validTilePositions = depthFirstSearchValidation()
+            
+            self.activityIndicatorLabel.text = "Performing Depth-First Search Traversal..."
+        
+            depthFirstSearchValidation { (valid) in
+                print("valid assigned")
+                self.activityIndicatorLabel.isHidden = true
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+                self.finishValidation(validTilePositions: valid)
+            }
         }
         else {
-            validTilePositions = breadthFirstSearchValidation()
+            
+            self.activityIndicatorLabel.text = "Performing Breadth-First Search Traversal..."
+            
+            breadthFirstSearchValidation { (valid) in
+                print("valid assigned")
+                self.activityIndicatorLabel.isHidden = true
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+                self.finishValidation(validTilePositions: valid)
+            }
         }
-        
+    }
+    
+    func finishValidation(validTilePositions : Bool) {
         //If tiles are placed on the board in a valid way, verify is the words themselves are valid
         if validTilePositions {
 
@@ -74,36 +125,17 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         
         //Show table view, as well as board state (valid or invalid)
-        self.validationPromptLabel.isHidden = true
         self.wordTableView.isHidden = false
         self.wordTableView.frame.origin.y = 550
         
         //Allow the user to rescan the board if he or she desires
         self.rescanButton.frame.origin.y = 790
         self.rescanButton.frame.origin.x = 146
+        self.rescanButton.isHidden = false
         
         self.boardValidityLabel.isHidden = false
+        self.titleLabel.isHidden = false
         self.titleLabel.text = "Words:"
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        //Declare the BoardViewController as the delegate and datasource of the boardCollectionView
-        boardCollectionView.delegate = self
-        boardCollectionView.dataSource = self
-        
-        //Declare the BoardViewController as the delegate and datasource of the wordTableView
-        wordTableView.delegate = self
-        wordTableView.dataSource = self
-        
-        //Put recognized tiles on board
-        self.populateBoard()
-        
-        //Hide table view and board validity label
-        //These will show after the user hits the validation button
-        self.wordTableView.isHidden = true
-        self.boardValidityLabel.isHidden = true
     }
     
     //Function that sets each cell's value to the apropriate letter
@@ -118,6 +150,7 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
             boardCells[i].row = Int(i / 15)
             boardCells[i].cellNum = i
         }
+        
     }
     
     //PROTOCOL STUBS:
@@ -205,9 +238,11 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         selectedTableWord = word
     }
     
+
+    
     //Function that checks if there is a path from the center tile to every tile in the board
     //using the Detph-First Serach traversal algorithm
-    func depthFirstSearchValidation() -> Bool{
+    func depthFirstSearchValidation(completion: @escaping (Bool) -> Void) {
         
         print("DFS")
         
@@ -216,63 +251,70 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         //If center is empty, then board is invalid
         if matrix[7][7].letter == "" {
-            return false
+            return completion(false)
         }
         
-        //Stack to assist in bread-first search
+        //Stack to assist in depth-first search
         var stack : [BoardCell] = [matrix[7][7]]
         var visited : [Int] = []
         
         //Depth-First Search
-        while stack.count > 0 {
-            let node = stack.popLast()!
-            
-            //Check if the cell has been already visited, mark visited if not
-            if visited.contains(node.cellNum) {
-                continue
-            }
-            else {
-                visited.append(node.cellNum)
+        var finished = false
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
+
+            if stack.count == 0 {
+                finished = true
+                timer.invalidate() // terminate timer loop
             }
             
-            //Highlight Cell
-            let index = IndexPath(row: node.cellNum, section: 0)
-            let currentCell = self.boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
-            currentCell.highlightCell(value: true)
-            
-            //Sleep for a second so that user can visualize search
-            do {
-                sleep(1)
-            }
-            
-            //Append neighbors of current cell to stack
-            for child in self.getCellNeighbors(matrix, node) {
-                if child.letter != "" {
-                    stack.append(child)
+            if !finished {
+                
+                let node = stack.popLast()!
+                
+                //Check if the cell has been already visited, mark visited if not
+                if !visited.contains(node.cellNum) {
+                    
+                    visited.append(node.cellNum)
+                    
+                    //Select collection view cell
+                    let index = IndexPath(row: node.cellNum, section: 0)
+                    let currentCell = self.boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+                    
+                    //Highlight Cell
+                    currentCell.highlightCell(value: true, color: UIColor.green)
+                    
+                    //Append neighbors of current cell to stack
+                    for child in self.getCellNeighbors(matrix, node) {
+                        if child.letter != "" {
+                            stack.append(child)
+                        }
+                    }
                 }
             }
-        }
-        
-        //Un-highlight cells
-        for cellNum in visited {
-            let index = IndexPath(row: cellNum, section: 0)
-            let currentCell = boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
-            currentCell.highlightCell(value: false)
-        }
-        
-        //Return true if all tiles in board where visited.
-        //For a cell to be visited, there must have been a path from the center tile to it
-        if visited.count == self.wordChecker.tileCount {
-            return true
-        }
-        else {
-            return false
+            else {
+                
+                //Un-highlight cells
+                for cellNum in visited {
+                    let index = IndexPath(row: cellNum, section: 0)
+                    let currentCell = self.boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+                    currentCell.highlightCell(value: false)
+                }
+                
+                //Return true if all tiles in board where visited.
+                //For a cell to be visited, there must have been a path from the center tile to it
+                if visited.count == self.wordChecker.tileCount {
+                    return completion(true)
+                }
+                else {
+                    return completion(false)
+                }
+            }
         }
     }
     
     //Function that checks if there is a path from the center tile to every tile in the board
     //using the Breadth-First Serach traversal algorithm
-    func breadthFirstSearchValidation() -> Bool {
+    func breadthFirstSearchValidation(completion: @escaping (Bool) -> Void) {
         
         print("BFS")
         
@@ -281,57 +323,64 @@ class BoardViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         //If center is empty, then board is invalid
         if matrix[7][7].letter == "" {
-            return false
+            return completion(false)
         }
         
         //Queue to assist in bread-first search
         var queue : [BoardCell] = [matrix[7][7]]
         var visited : [Int] = []
         
-        //Breadth-First Search
-        while queue.count > 0 {
-            let node = queue.remove(at: 0)
-            
-            //Check if the cell has been already visited, mark visited if not
-            if visited.contains(node.cellNum) {
-                continue
-            }
-            else {
-                visited.append(node.cellNum)
+        //Depth-First Search
+        var finished = false
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
+
+            if queue.count == 0 {
+                finished = true
+                timer.invalidate() // terminate timer loop
             }
             
-            //Highlight cell currently beign visited
-            let index = IndexPath(row: node.cellNum, section: 0)
-            let currentCell = boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
-            currentCell.highlightCell(value: true)
-            
-            //Sleep for a second so that user can visualize search
-            do {
-                sleep(1)
-            }
-            
-            //Append neighbors of current cell to queue
-            for neighbor in self.getCellNeighbors(matrix, node) {
-                if neighbor.letter != "" {
-                    queue.append(neighbor)
+            if !finished {
+                
+                let node = queue.remove(at: 0)
+                
+                //Check if the cell has been already visited, mark visited if not
+                if !visited.contains(node.cellNum) {
+                    
+                    visited.append(node.cellNum)
+                    
+                    //Select collection view cell
+                    let index = IndexPath(row: node.cellNum, section: 0)
+                    let currentCell = self.boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+                    
+                    //Highlight Cell
+                    currentCell.highlightCell(value: true, color: UIColor.green)
+                    
+                    //Append neighbors of current cell to stack
+                    for child in self.getCellNeighbors(matrix, node) {
+                        if child.letter != "" {
+                            queue.append(child)
+                        }
+                    }
                 }
             }
-        }
-        
-        //Un-highlight cells
-        for cellNum in visited {
-            let index = IndexPath(row: cellNum, section: 0)
-            let currentCell = boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
-            currentCell.highlightCell(value: false)
-        }
-        
-        //Return true if all tiles in board where visited.
-        //For a cell to be visited, there must have been a path from the center tile to it
-        if visited.count == self.wordChecker.tileCount {
-            return true
-        }
-        else {
-            return false
+            else {
+                
+                //Un-highlight cells
+                for cellNum in visited {
+                    let index = IndexPath(row: cellNum, section: 0)
+                    let currentCell = self.boardCollectionView.cellForItem(at: index) as! BoardCollectionViewCell
+                    currentCell.highlightCell(value: false)
+                }
+                
+                //Return true if all tiles in board where visited.
+                //For a cell to be visited, there must have been a path from the center tile to it
+                if visited.count == self.wordChecker.tileCount {
+                    return completion(true)
+                }
+                else {
+                    return completion(false)
+                }
+            }
         }
     }
     
