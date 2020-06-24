@@ -40,13 +40,13 @@ Follow these instructions to build and run the application on you iOS device.
 
 ### Built With
 
-1. Python
+* Python
 
-2. Swift
+* Swift
 
-3. Tensorflow
+* Tensorflow
 
-4. MLKit
+* MLKit
 
 
 
