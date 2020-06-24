@@ -14,7 +14,7 @@ Follow these instructions to build and run the application on you iOS device.
 
 3. iOS device (preferably iPhone XR)
 
-### Building the Scrabble Aid application
+### Building the Scrabble Aid App on Xcode
 
 1. Clone or download the project into your computer.
 
@@ -25,6 +25,14 @@ Follow these instructions to build and run the application on you iOS device.
 4. Modify the bundle identifier and select the development team in **General->Signing**.
 
 5. Build and run the app in **Xcode**. Note that the app can't be ran on the Xcode simulator, it must be ran on a real iOS device. (This application was made to run on an iPhone XR).
+
+### Running Scrabble Aid on Your Device
+
+1. Once the app is installed, tap the app icon on you homescreen to open it.  
+
+2. You will need a Scrabble board to detect. Unfortunately, for the app to work properly, you will need to use the exact version of the Scrabble board that the application was built to work with. You may print the image below and use that as your Scrabble board.
+
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
 
 
 
