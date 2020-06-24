@@ -32,7 +32,7 @@ Follow these instructions to build and run the application on you iOS device.
 
 2. You will need a Scrabble board to detect. Unfortunately, for the app to work properly, you will need to use the exact version of the Scrabble board that the application was built to work with. You may print the image below and use that as your Scrabble board.
 
-![Image of Scrabble Board](https://github.com/aeaguilarn/ScrabbleAid/blob/master/ScrabbleBoard.jpg =400x400)
+![Image of Scrabble Board](https://github.com/aeaguilarn/ScrabbleAid/blob/master/ScrabbleBoard.jpg | width=100)
 
 
 
