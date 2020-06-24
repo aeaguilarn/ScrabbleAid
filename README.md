@@ -48,6 +48,9 @@ Follow these instructions to build and run the application on you iOS device.
 
 * MLKit
 
+### Contributing
+
+All contributions or feedback are welcome!
 
 
 
