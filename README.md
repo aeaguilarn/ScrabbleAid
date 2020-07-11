@@ -34,7 +34,7 @@ Follow these instructions to build and run the application on you iOS device.
 
 <img src="https://github.com/aeaguilarn/ScrabbleAid/blob/master/ScrabbleBoard.jpg" width="400">
 
-3. After scanning the board, comfirm the center tile of the board was accurately detected. Make sure the entire tile fits on the frame. If detection unsuccessful, you may scan the board again.
+3. After scanning the board, confirm the center tile of the board was accurately detected. Make sure the entire tile fits on the frame. If detection unsuccessful, you may scan the board again.
 
 4. Finally, select which searching algorithm you would like to use to validate the Scrabble board. For a Scrabble board to be valid, there are two criteria that must be met. First, there must be a path (of horizontally and vertically adjacent tiles) starting from the center tile to every tile placed on the board. Second, tiles on the board (from left to right or top to bottom)  must represent words contained in the English dictionary.
 
@@ -51,6 +51,7 @@ Follow these instructions to build and run the application on you iOS device.
 ### Contributing
 
 All contributions or feedback are welcome!
+
 
 
 
