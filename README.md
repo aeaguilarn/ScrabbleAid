@@ -42,8 +42,6 @@ Follow these instructions to build and run the application on you iOS device.
 
 Check out a walktrhough of this app here: https://www.linkedin.com/posts/andres-aguilar-cs_after-a-night-of-playing-scrabble-with-my-ugcPost-6688795317040771072-NcQp
 
-<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6688795317040771072" height="1082" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
-
 ### Built With
 
 * Python
