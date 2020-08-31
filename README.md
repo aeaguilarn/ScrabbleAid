@@ -40,7 +40,7 @@ Follow these instructions to build and run the application on you iOS device.
 
 ### App Walkthrough GIF
 
-<img src="http://g.recordit.co/2U3OO6HN01.gif" ><br>
+<img src='http://g.recordit.co/2U3OO6HN01.gif' ><br>
 
 ### Built With
 
