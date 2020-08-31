@@ -38,9 +38,11 @@ Follow these instructions to build and run the application on you iOS device.
 
 4. Finally, select which searching algorithm you would like to use to validate the Scrabble board. For a Scrabble board to be valid, there are two criteria that must be met. First, there must be a path (of horizontally and vertically adjacent tiles) starting from the center tile to every tile placed on the board. Second, tiles on the board (from left to right or top to bottom)  must represent words contained in the English dictionary.
 
-### App Walkthrough GIF
+### App Walkthrough 
 
-<img src='http://g.recordit.co/2U3OO6HN01.gif' ><br>
+<figure class="video_container">
+  <iframe src="https://www.youtube.com/embed/enMumwvLAug" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
 
 ### Built With
 
